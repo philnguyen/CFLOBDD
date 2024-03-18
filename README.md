@@ -21,3 +21,9 @@ Code tested with Idris 2 `0.7.0`:
 ```
 idris2 Main.idr
 ```
+
+### Project structure:
+
+* [`CFLOBDD.idr`](https://github.com/philnguyen/CFLOBDD/tree/main/src) defines the datastructure and its oeprational semantics
+* [`Construction.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/Construction.idr) implements "Construction 1" in Appendix C
+* [`Main.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/Main.idr) runs the residual tests I couldn't express as theorems to check statically
