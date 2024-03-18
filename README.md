@@ -1,4 +1,4 @@
-This is a re-implementation of the [CFLOBDD](https://dl.acm.org/doi/10.1145/3651157) work in Idris,
+This is a re-implementation of the [CFLOBDD](https://dl.acm.org/doi/10.1145/3651157) work (by Sistla, Chaudhuri, and Reps) in Idris,
 to help my understanding.
 
 Differences from the original paper:
