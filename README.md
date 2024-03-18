@@ -16,6 +16,9 @@ Differences from the original paper:
   on the data.
 * The `DontCare` grouping is "height-polymorphic", instead of strictly 0 as in the paper.
   This obviates the need for the `No-Distinction-Proto-CFLOBDD` family.
+* The `level` and `exits` properties aren't stored as data at runtime.
+  They're just static type indices to convince the type-checker that things match up
+  and terminate.
 
 Code tested with Idris 2 `0.7.0`:
 ```
