@@ -1,5 +1,6 @@
 import CFLOBDD
-import Construction
+import Construction1
+import Tests
 
 main : IO ()
 main = do

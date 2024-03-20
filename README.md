@@ -27,6 +27,7 @@ idris2 Main.idr
 
 ### Project structure:
 
-* [`CFLOBDD.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/CFLOBDD.idr) defines the datastructure and its oeprational semantics
-* [`Construction.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/Construction.idr) implements "Construction 1" in Appendix C
-* [`Main.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/Main.idr) runs the residual tests I couldn't express as theorems to check statically
+* [`CFLOBDD.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/CFLOBDD.idr) defines the datastructure and its operational semantics
+* [`Construction1.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/Construction.idr) implements "Construction 1" in Appendix C
+* [`Tests.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/Tests.idr) transcribes and tests some examples from the paper
+* [`Main.idr`](https://github.com/philnguyen/CFLOBDD/blob/main/src/Main.idr) runs the residual tests I couldn't express as theorems

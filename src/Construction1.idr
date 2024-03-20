@@ -44,11 +44,6 @@ partial
 Eq t => Eq (CFLOBDD k t) where
     (==) = sameNodeBy (==)
 
-private -- HACK
-arbitrary : DecisionTree k t -> t
-arbitrary (Choice x _) = x
-arbitrary (SubTrees ts) = arbitrary (arbitrary ts)
-
 private
 leaves : DecisionTree k t -> List t
 leaves (Choice f t) = [f, t]
@@ -59,6 +54,10 @@ uniqueLeaves : Eq t => DecisionTree k t -> (n ** Vect (1 + n) t)
 uniqueLeaves t = case nub (leaves t) of
                    [] => (_ ** [arbitrary t]) -- won't happen
                    x :: xs => (_ ** fromList (x :: xs))
+  where -- HACK
+    arbitrary : DecisionTree l a -> a
+    arbitrary (Choice x _) = x
+    arbitrary (SubTrees ts) = arbitrary (arbitrary ts)
 
 private
 indexer : Eq t => Vect (1 + n) t -> t -> Fin (1 + n)
@@ -82,50 +81,3 @@ buildCFLOBDD t@(SubTrees _) =
       (_ ** (uniqueSubnodes, subnodeIdx)) = indexLeaves treeOfSubnodes
       Node first nexts = buildCFLOBDD (map subnodeIdx treeOfSubnodes)
   in Node (Internal first (map (`index` uniqueSubnodes) nexts)) uniqueLeaves
-
-
------------------------------------------
--- Examples
------------------------------------------
-
-ff, tt : DecisionTree 0 (Fin 2)
-ff = Choice 0 0
-tt = Choice 1 1
-ffff, tttt, fftt : DecisionTree 1 (Fin 2)
-ffff = SubTrees (Choice ff ff)
-tttt = SubTrees (Choice tt tt)
-fftt = SubTrees (Choice ff tt)
-xorOrAndTree : DecisionTree 2 (Fin 2)
-xorOrAndTree = SubTrees (SubTrees (Choice (Choice ffff tttt) (Choice tttt fftt)))
-
-xorOrAnd : CFLOBDD 2 (Fin 2)
-xorOrAnd = buildCFLOBDD xorOrAndTree
-
-xorOrAndAt : Fin 2 -> Fin 2 -> Fin 2 -> Fin 2 -> Fin 2
-xorOrAndAt x0 x1 x2 x3 =
-  eval xorOrAnd (Halves (Halves (Bit x0) (Bit x1)) (Halves (Bit x2) (Bit x3)))
-
--- The following tests need to be run at run-time,
--- because the current definition of structural equality between `CFLOBDD` isn't proven total,
--- and can't be stated in propositions to prove statically
-xorOrAndLeaves : List (Fin 2)
-xorOrAndLeaves = [ xorOrAndAt 0 0 0 0
-                 , xorOrAndAt 0 0 0 1
-                 , xorOrAndAt 0 0 1 0
-                 , xorOrAndAt 0 0 1 1
-                 , xorOrAndAt 0 1 0 0
-                 , xorOrAndAt 0 1 0 1
-                 , xorOrAndAt 0 1 1 0
-                 , xorOrAndAt 0 1 1 1
-                 , xorOrAndAt 1 0 0 0
-                 , xorOrAndAt 1 0 0 1
-                 , xorOrAndAt 1 0 1 0
-                 , xorOrAndAt 1 0 1 1
-                 , xorOrAndAt 1 1 0 0
-                 , xorOrAndAt 1 1 0 1
-                 , xorOrAndAt 1 1 1 0
-                 , xorOrAndAt 1 1 1 1
-                 ]
-xorOrAndLeavesExpected : List (Fin 2)
-xorOrAndLeavesExpected = [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1]
-xorOrAndCorrect = xorOrAndLeaves == xorOrAndLeavesExpected
